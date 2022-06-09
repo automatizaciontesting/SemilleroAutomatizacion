@@ -1,0 +1,64 @@
+group 'org.ias.com.co'
+version '1.0'
+
+repositories {
+    maven {
+        url "https://plugins.gradle.org/m2"
+    }
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2"
+        }
+
+    }
+    ext {
+        serenityCoreVersion = '3.2.5'
+        serenityCucumberVersion = '3.2.5'
+        serenityEnsureVersion = '3.2.4'
+        junitVersion = '4.13.2'
+        assertJVersion = '3.20.2'
+        slf4jVersion = '2.0.0-alpha4'
+        apachePoiVersion= '5.0.0'
+        mavenSurefireVersion= '2.22.2'
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:${serenityCoreVersion}")
+        classpath("net.serenity-bdd:serenity-single-page-report:${serenityCoreVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-core:3.2.5"
+    implementation "net.serenity-bdd:serenity-junit:3.2.5"
+    implementation "net.serenity-bdd:serenity-cucumber:3.2.5"
+    implementation "net.serenity-bdd:serenity-screenplay:3.2.5"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:3.2.5"
+    implementation "net.serenity-bdd:serenity-ensure:3.2.5"
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.assertj:assertj-core:3.20.2"
+    testImplementation "org.slf4j:slf4j-simple:2.0.0-alpha4"
+    implementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: '3.2.5'
+    implementation group: 'net.serenity-bdd', name: 'serenity-json-summary-report', version: '3.1.15'
+
+}
+serenity {
+    reports = ['single-page-html','json-summary']
+}
+wrapper {
+    gradleVersion = "7.4.2"
+}
+test {
+    systemProperty "file.encoding", "ISO-8859-1"
+    enableAssertions = true
+    systemProperty 'tags', System.getProperty('tags', '')
+    systemProperty 'environment', System.getProperty('environment', '')
+}
